@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <nav class="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/add"> Add Task</router-link>
+      <router-link :to="{name:'Overview'}">Home</router-link> |
+      <router-link :to="{name:'Add Task'}"> Add Task</router-link>
     </nav>
     <div id="router-container">
       <router-view/>
@@ -40,11 +40,11 @@ export default {
 .nav a {
   padding: 0 3px;
   font-weight: bold;
-  color: #2c3e50;
+  color: darkblue !important;
 }
 
 .nav a.router-link-exact-active {
-     color: darkgreen;
+     color: darkgreen !important;
 }
 
 #router-container {

@@ -57,13 +57,13 @@ class DataService {
         }).post(`/task`, json)
     }
 
-    editTask(id, json) {
+    editTask(json) {
         return axios.create({
             baseURL: DataService.url,
             headers: {
                 "Content-type": "application/json"
             }
-        }).post(`/task/${id}`, json)
+        }).put(`/task`, json)
     }
 
     deleteTask(id) {
