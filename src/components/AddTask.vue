@@ -169,13 +169,13 @@ export default {
       this.task.contactMail = this.form.contactMail;
       this.task.deadline = dateformat(this.form.deadline, "dd-mm-yyyy HH:MM:ss");
       this.task.url = this.form.url;
-      console.log(this.task);
-      console.log(dateformat(this.form.deadline, "dd-mm-yyyy HH:MM:ss"));
       if (!this.$v.$invalid) {
         DataService.createTask(this.form).then(response => {
+          console.log(this.task);
           console.log(response)
+          this.clearForm();
+          window.location.href = "#/";
         })
-        this.clearForm();
       }
     }
   }

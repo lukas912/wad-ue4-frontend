@@ -138,7 +138,8 @@ export default {
       console.log(this.task);
       if (!this.$v.$invalid) {
         DataService.editTask(this.task).then(response => {
-          console.log(response)
+          console.log(response);
+          window.location.href = "#/";
         })
       }
     }
