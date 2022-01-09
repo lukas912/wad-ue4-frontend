@@ -36,10 +36,16 @@
             <label>Fälligkeit</label>
           </md-datepicker>
 
-          <md-field :class="getValidationClass('contactMail')">
+          <md-autocomplete v-model="form.contactMail" :md-options="emails" :class="getValidationClass('contactMail')">
             <label>Kontakt</label>
-            <md-input v-model="form.contactMail"></md-input>
-          </md-field>
+            <template slot="md-autocomplete-item" slot-scope="{ item, term }">
+              <md-highlight-text :md-term="term">{{ item }}</md-highlight-text>
+            </template>
+
+            <template slot="md-autocomplete-empty" slot-scope="{ term }">
+              No email address matching "{{ term }}" were found.
+            </template>
+          </md-autocomplete>
 
           <md-field :class="getValidationClass('url')">
             <label>URL</label>
@@ -63,6 +69,7 @@ import {
   email,
   maxLength
 } from 'vuelidate/lib/validators'
+import dateformat from "dateformat";
 export default {
   name: "AddTask",
   mixins: [validationMixin],
@@ -70,6 +77,8 @@ export default {
     task: Object
   },
   data: () => ({
+    tasks: [],
+    emails: [],
     form: {
       title: null,
       shortDesc: null,
@@ -84,7 +93,8 @@ export default {
     }
   }),
   mounted() {
-    this.$v.$reset()
+    this.$v.$reset();
+    this.getEmails();
     /*
     this.form.title = this.task.title;
     this.form.shortDesc = this.task.shortDesc;
@@ -141,18 +151,28 @@ export default {
       this.form.contactMail = null
       this.form.url = null
     },
+    getEmails() {
+      DataService.getTasks().then(response => {
+        this.tasks = response.data;
+        for(const row in this.tasks) {
+          this.emails.push(this.tasks[row]['contactMail']);
+        }
+      });
+    },
     validateTask () {
       this.$v.$touch()
+      this.task = this.form;
       this.task.title = this.form.title;
       this.task.shortDesc = this.form.shortDesc;
       this.task.longDesc = this.form.longDesc;
       this.task.status = this.form.status;
       this.task.contactMail = this.form.contactMail;
-      this.task.deadline = this.form.deadline.format("DD-MM-YYYY hh:mm:ss");
+      this.task.deadline = dateformat(this.form.deadline, "dd-mm-yyyy HH:MM:ss");
       this.task.url = this.form.url;
       console.log(this.task);
+      console.log(dateformat(this.form.deadline, "dd-mm-yyyy HH:MM:ss"));
       if (!this.$v.$invalid) {
-        DataService.createTask(this.task).then(response => {
+        DataService.createTask(this.form).then(response => {
           console.log(response)
         })
         this.clearForm();
