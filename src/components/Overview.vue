@@ -37,6 +37,7 @@
 <script>
 import DataService from "@/services/DataService";
 import $ from 'jquery'
+import dateformat from "dateformat";
 export default {
   name: "Main",
   data() {
@@ -142,7 +143,7 @@ export default {
 
           tableCell = tr.insertCell(-1);
           if(cell === "deadline")
-            tableCell.innerHTML = deadline.toLocaleDateString();
+            tableCell.innerHTML = dateformat(deadline, "dd.mm.yyyy");
           else
             tableCell.innerHTML = this.tasks[row][cell];
         }
