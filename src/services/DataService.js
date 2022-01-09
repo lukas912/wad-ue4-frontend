@@ -72,7 +72,7 @@ class DataService {
             headers: {
                 "Content-type": "application/json"
             }
-        }).post(`/task/${id}`)
+        }).delete(`/task/${id}`)
     }
 }
 

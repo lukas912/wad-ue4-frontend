@@ -143,11 +143,19 @@ export default {
     },
     validateTask () {
       this.$v.$touch()
-
+      this.task.title = this.form.title;
+      this.task.shortDesc = this.form.shortDesc;
+      this.task.longDesc = this.form.longDesc;
+      this.task.status = this.form.status;
+      this.task.contactMail = this.form.contactMail;
+      this.task.deadline = this.form.deadline.format("DD-MM-YYYY hh:mm:ss");
+      this.task.url = this.form.url;
+      console.log(this.task);
       if (!this.$v.$invalid) {
-        DataService.getTasks().then(response => {
+        DataService.createTask(this.task).then(response => {
           console.log(response)
         })
+        this.clearForm();
       }
     }
   }

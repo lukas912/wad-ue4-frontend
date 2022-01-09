@@ -112,6 +112,7 @@ export default {
         deleteButton.addEventListener("click", function () {
           if (confirm("Are you sure?")) {
             DataService.deleteTask(id);
+            window.location.reload();
           } else {
             console.log("Deletion of task "+id+" aborted");
           }
@@ -123,7 +124,7 @@ export default {
 
         details.appendChild(body);
 
-        const deadline = new Date(this.tasks[row]["deadline"].replace(' AD at ', 'T').replace(' PDT', 'Z').replaceAll('.', '-'));
+        const deadline = new Date(this.tasks[row]["deadline"]);
 
         if(deadline < nextWeek && this.tasks[row]["status"] !== "DONE") {
           tr.className = "accordion-toggle bg-danger";

@@ -89,11 +89,11 @@ export default {
             console.log(response.data)
             this.form.id = response.data.id;
             this.form.title = response.data.title;
-            //this.form.shortDesc = response.data.shortDesc;
-            this.form.longDesc = response.data["description"];
+            this.form.shortDesc = response.data.shortDesc;
+            this.form.longDesc = response.data.longDesc;
             this.form.status = response.data.status;
             this.form.contactMail = response.data.contactMail;
-            this.form.deadline = new Date(response.data.deadline.replace(' AD at ', 'T').replace(' PDT', 'Z').replaceAll('.', '-'));
+            this.form.deadline = new Date(response.data.deadline);
             this.form.url = response.data.url;
           })
           .catch(e => {
@@ -113,11 +113,11 @@ export default {
       this.$v.$touch()
       this.task.id = this.form.id
       this.task.title = this.form.title;
-      //this.task.shortDesc = this.form.shortDesc;
-      this.task.description = this.form.longDesc;
+      this.task.shortDesc = this.form.shortDesc;
+      this.task.longDesc = this.form.longDesc;
       this.task.status = this.form.status;
       this.task.contactMail = this.form.contactMail;
-      this.task.deadline = this.form.deadline.toLocaleDateString();
+      this.task.deadline = this.form.deadline.format("DD-MM-YYYY hh:mm:ss");
       this.task.url = this.form.url;
       console.log(this.task);
       if (!this.$v.$invalid) {
