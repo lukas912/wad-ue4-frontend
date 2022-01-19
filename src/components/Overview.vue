@@ -37,7 +37,6 @@
 <script>
 import DataService from "@/services/DataService";
 import $ from 'jquery'
-import dateformat from "dateformat";
 export default {
   name: "Main",
   data() {
@@ -84,9 +83,11 @@ export default {
       const nextWeek = new Date().setDate(new Date().getDate() + 7);
 
       console.log(this.tasks);
+      console.log(this.tasks.length)
+      var counter = 0;
 
-
-      for (const row in this.tasks) {
+      for (let row in this.tasks) {
+        console.log("HERE" + counter);
         let id = this.tasks[row]['id'];
         tr = table.insertRow(-1);
         tr.setAttribute("data-toggle","collapse");
@@ -125,7 +126,9 @@ export default {
 
         details.appendChild(body);
 
+
         const deadline = new Date(this.tasks[row]["deadline"]);
+
 
         if(deadline < nextWeek && this.tasks[row]["status"] !== "DONE") {
           tr.className = "accordion-toggle bg-danger";
@@ -140,17 +143,28 @@ export default {
         for (const cell in this.tasks[row]) {
           if(cell === "longDesc" || cell === "id")
             continue; //skip
-
           tableCell = tr.insertCell(-1);
-          if(cell === "deadline")
-            tableCell.innerHTML = dateformat(deadline, "dd.mm.yyyy");
+          if(cell === "deadline") {
+            try {
+              tableCell.innerHTML = this.tasks[row].deadline;
+            }
+
+            catch (Error) {
+              console.log(Error);
+            }
+          }
+
           else
             tableCell.innerHTML = this.tasks[row][cell];
         }
+
       }
+
+
       const thead = table.createTHead();
 
       tr = thead.insertRow(0);
+
 
       for (const header in this.tasks[0]) {
         if(header === "longDesc" || header === "id")
